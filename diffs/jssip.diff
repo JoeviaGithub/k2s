@@ -1,0 +1,58 @@
+diff -urN jssip-orig/lib/JsSIP.js jssip/lib/JsSIP.js
+--- jssip-orig/lib/JsSIP.js	2016-06-14 13:49:27.000000000 +0300
++++ jssip/lib/JsSIP.js	2016-11-03 07:05:42.673012771 +0200
+@@ -16,6 +16,7 @@
+ var Grammar = require('./Grammar');
+ var WebSocketInterface = require('./WebSocketInterface');
+ 
++Utils.try_nomedia(rtcninja);
+ 
+ /**
+  * Expose the JsSIP module.
+diff -urN jssip-orig/lib/RTCSession.js jssip/lib/RTCSession.js
+--- jssip-orig/lib/RTCSession.js	2016-06-24 01:42:59.000000000 +0300
++++ jssip/lib/RTCSession.js	2016-11-03 07:04:44.338257384 +0200
+@@ -44,6 +44,7 @@
+ var RTCSession_ReferNotifier = require('./RTCSession/ReferNotifier');
+ var RTCSession_ReferSubscriber = require('./RTCSession/ReferSubscriber');
+ 
++Utils.try_nomedia(rtcninja);
+ 
+ /**
+  * Local variables.
+diff -urN jssip-orig/lib/UA.js jssip/lib/UA.js
+--- jssip-orig/lib/UA.js	2016-09-30 12:49:42.000000000 +0300
++++ jssip/lib/UA.js	2016-11-03 07:03:11.372240030 +0200
+@@ -44,7 +44,7 @@
+ var SIPMessage = require('./SIPMessage');
+ var sanityCheck = require('./sanityCheck');
+ 
+-
++Utils.try_nomedia(rtcninja);
+ 
+ /**
+  * The User-Agent class.
+diff -urN jssip-orig/lib/Utils.js jssip/lib/Utils.js
+--- jssip-orig/lib/Utils.js	2016-06-14 13:49:27.000000000 +0300
++++ jssip/lib/Utils.js	2016-11-03 07:03:23.539980598 +0200
+@@ -10,6 +10,20 @@
+ var URI = require('./URI');
+ var Grammar = require('./Grammar');
+ 
++Utils.try_nomedia = function(rtcninja) {
++  if (!(typeof module !== 'undefined' && module.exports))
++    return;
++  try {
++    var rtcninjaFake = require('rtcninja-fake');
++    rtcninja({plugin: rtcninjaFake});
++  }
++  catch (e) {
++    if (e instanceof Error && e.code === "MODULE_NOT_FOUND")
++        console.log("Can't load rtcninja-fake");
++    else
++        throw e;
++  }
++}
+ 
+ Utils.str_utf8_length = function(string) {
+   return unescape(encodeURIComponent(string)).length;

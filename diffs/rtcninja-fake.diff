@@ -1,0 +1,28 @@
+diff -urN rtcninja-fake.orig/index.js rtcninja-fake/index.js
+--- rtcninja-fake.orig/index.js	2015-04-01 13:38:56.000000000 +0300
++++ rtcninja-fake/index.js	2016-11-02 22:26:22.250796345 +0200
+@@ -10,6 +10,7 @@
+  */
+ 	RTCPeerConnection = require('./lib/RTCPeerConnection'),
+ 	RTCSessionDescription = require('./lib/RTCSessionDescription'),
++	getUserMedia = require('./lib/getUserMedia'),
+ 	RTCIceCandidate = require('./lib/RTCIceCandidate');
+ 
+ 
+@@ -42,5 +43,6 @@
+ 	RTCPeerConnection:      RTCPeerConnection,
+ 	RTCSessionDescription:  RTCSessionDescription,
+ 	RTCIceCandidate:        RTCIceCandidate,
++	getUserMedia:		getUserMedia,
+ 	canRenegotiate:         true
+ };
+diff -urN rtcninja-fake.orig/lib/getUserMedia.js rtcninja-fake/lib/getUserMedia.js
+--- rtcninja-fake.orig/lib/getUserMedia.js	1970-01-01 03:00:00.000000000 +0300
++++ rtcninja-fake/lib/getUserMedia.js	2016-11-02 22:29:36.378713481 +0200
+@@ -0,0 +1,6 @@
++/**
++ * Expose the getUserMedia class.
++ */
++module.exports = getUserMedia;
++
++function getUserMedia(c, s, e) { s(); }
